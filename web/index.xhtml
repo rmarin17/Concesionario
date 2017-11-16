@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Concesionario CARPRO</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"></link>
+    </h:head>
+    <h:body>
+        <div class="container">
+            <p:panel id="panel_principal">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <h4>Concesionario CARPRO</h4>
+                        <br></br>
+                    </div>
+                </div>
+                
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>Ingrese aquí los carros:</h6>
+                            <h:form>
+                                <p:panelGrid columns="1" class="text-center">
+                                
+                                <p:inputText  placeholder="Marca" value="#{carrosBean.carro.marca}"></p:inputText>
+                                <p:inputText  placeholder="Modelo" value="#{carrosBean.carro.modelo}"></p:inputText>
+                                <p:inputText  placeholder="Precio" value="#{carrosBean.carro.precio}"></p:inputText>                                
+                            </p:panelGrid>
+                            
+                            
+                            <br></br>
+                           <p:commandButton value="Registrar" action="#{carrosBean.registrarCarros()}" update=":formTabla:tablaCarro"></p:commandButton>
+                          <p:commandButton value="Limpiar Registros" action="#{carrosBean.resetLista()}"  update=":formTabla:tablaCarro"></p:commandButton>
+                            </h:form>
+                            <br></br>                   
+                        </div>
+                        
+                        
+                        <div class="col-md-4">
+                            <h6>Eliminar Carro:</h6>
+                            <h:form>
+                                <p:panelGrid columns="1" class="text-center">
+                                <h:outputText value="Ingere el Id a Eliminar" />
+                                <p:inputText  value="#{carrosBean.carro.id}"></p:inputText>                            
+                            </p:panelGrid>
+                            
+                            
+                            <br></br>
+                           <p:commandButton value="Eliminar" action="#{carrosBean.eliminarCarros()}" update=":formTabla:tablaCarro"></p:commandButton>
+                            
+                            </h:form>
+                            <br></br>                   
+                        </div>
+                        
+                        
+                        <div class="col-md-8">
+                            <h6>Listado Carros</h6>
+                            <p:growl id="growl" showDetail="true" sticky="false" />
+                            <h:form id="formTabla">
+                            <p:dataTable id="tablaCarro" var="car" emptyMessage="No hay carros registrados"
+                                         value="#{carrosBean.listCar}"
+                                         
+                                         rowKey="#{car.id}">
+                                
+                                <p:column headerText="Id">
+                                    <h:outputLabel value="#{car.id}"></h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Marca">
+                                    <h:outputLabel value="#{car.marca}"></h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Modelo">
+                                    <h:outputLabel  value="#{car.modelo}"></h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Precio">
+                                    <h:outputLabel value="#{car.precio}"></h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Editar" style="width:70px;text-align: center">
+                                    <p:commandButton update=":editCarroForm:editCarro" oncomplete="PF('editCarro').show()" icon="ui-icon-search" title="View">
+                                        <f:setPropertyActionListener value="#{car}" target="#{carrosBean.selectedCar}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                            </h:form>
+                            <h:form id="editCarroForm">
+                                <p:dialog header="Editar Carro" widgetVar="editCarro" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                                    <p:outputPanel id="editCarro" style="text-align:center;">
+                                        <p:panelGrid  columns="2" rendered="#{not empty carrosBean.selectedCar}" columnClasses="label,value">
+
+                                            <h:outputText value="Id:" />
+                                            <p:inputText value="#{carrosBean.selectedCar.id}"></p:inputText>
+
+                                            <h:outputText value="Marca" />
+                                            <p:inputText value="#{carrosBean.selectedCar.marca}"></p:inputText>
+
+                                            <h:outputText value="Modelo:" />
+                                            <p:inputText value="#{carrosBean.selectedCar.modelo}"></p:inputText>
+
+                                            <h:outputText value="Precio:" />
+                                            <p:inputText value="#{carrosBean.selectedCar.precio}"></p:inputText>
+                                            <p:commandButton value="Editar" action="#{carrosBean.editarCarros(carrosBean.selectedCar)}" update=":formTabla:tablaCarro">
+                                               
+                                            </p:commandButton>
+                                        </p:panelGrid>
+                                    </p:outputPanel>
+                                </p:dialog>
+                            </h:form>
+                            
+                        
+                            
+                        </div>
+                        
+                    </div>
+                
+
+            </p:panel>
+
+        </div>
+
+
+        <br />
+
+    </h:body>
+</html>
+
